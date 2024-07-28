@@ -1,4 +1,4 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+ESX = exports['es_extended']:getSharedObject()
 
 ----- | CREATING MODEL SPAWN | -----
 local function FetchModel(model)
@@ -30,7 +30,7 @@ local function CreateLocalNPC(index)
     SetEntityInvincible(GrammaPed, true)
     SetBlockingOfNonTemporaryEvents(GrammaPed, true)
     ----- | CREATING TARGET FOR PED | -----
-    exports['qb-target']:AddTargetEntity(GrammaPed, {
+    exports['ox_target']:addGlobalPed(GrammaPed, {
         options = {
             {
                 type = "client",
@@ -74,7 +74,7 @@ Citizen.CreateThread(function()
     end
 end)
 RegisterNetEvent('bd-gramma:client:requestHelp', function()
-    local PlayerData = QBCore.Functions.GetPlayerData()
+    local PlayerData = ESX.GetPlayerFromIdData()
     local cash = PlayerData.money.cash
     local totalpay = Config.GrammaCost
     if cash >= totalpay then
