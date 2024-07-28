@@ -12,7 +12,7 @@
 --]] 
 Config = {}
 
-Config.AmulanceJob = 'qb' -- Supports 'qb' & 'ars' ( qb-ambulancejob & ars_ambulancejob )
+Config.AmulanceJob = 'qb' -- Supports 'qb' & 'ars' ( qb-ambulancejob & ars_ambulancejob ) ( IF  USING ESX CHANGE TO 'esx' )
 Config.ReviveTime = 15000 -- The Time It Takes For Gramma To Revive You ( Default 15 seconds )
 Config.GrammaCost = 2500 -- The Amount Gramma Takes To Revive You ( Default is $2,500 )
 
