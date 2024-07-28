@@ -1,18 +1,14 @@
-ESX = nil
+local QBCore = exports['qb-core']:GetCoreObject()
 
-TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 RegisterNetEvent('bd-gramma:server:RecievedHelp', function(src)
     -- Remove the money from player
-    local xPlayer = ESX.GetPlayerFromId(source)
+    local Player = QBCore.Functions.GetPlayer(source)
     local cash = Config.GrammaCost
     
-    xPlayer.removeAccountMoney('bank', cash)
-    if Config.AmulanceJob == 'esx' then
-       --('esx_ambulancejob:revive')
-      --  TriggerEvent('esx_ambulancejob:revive_new')
-      --  TriggerEvent('esx_ambulancejob:revive_new', source)
-        xPlayer.triggerEvent('esx_ambulancejob:revive_new')
-        --('esx_ambulancejob:revive_new')
-       -- TriggerEvent('esx_ambulancejob:revive_new', id)
+    Player.Functions.RemoveMoney('cash', cash)
+    if Config.AmulanceJob == 'qb' then
+        TriggerClientEvent('hospital:client:Revive', Player.PlayerData.source)
+    elseif Config.AmulanceJob == 'ars' then
+        TriggerClientEvent('ars_ambulancejob:healPlayer', {revive = true})
     end
 end)
