@@ -1,5 +1,5 @@
 # bd-gramma
-- Simple Illegal Gramma with QBCore
+- Simple Illegal Gramma with QBCore ( Check releases for ESX )
 - Supports qb and ars ambulancejob
 
 # SUPPORT OR QUESTIONS
