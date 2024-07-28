@@ -1,4 +1,18 @@
-ESX = exports['es_extended']:getSharedObject()
+ESX = nil
+
+Citizen.CreateThread(function()
+	while ESX == nil do
+		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+		Citizen.Wait(0)
+	end
+
+	while ESX.GetPlayerData().job == nil do
+		Citizen.Wait(100)
+	end
+
+	PlayerLoaded = true
+	ESX.PlayerData = ESX.GetPlayerData()
+end)
 
 ----- | CREATING MODEL SPAWN | -----
 local function FetchModel(model)
@@ -30,18 +44,40 @@ local function CreateLocalNPC(index)
     SetEntityInvincible(GrammaPed, true)
     SetBlockingOfNonTemporaryEvents(GrammaPed, true)
     ----- | CREATING TARGET FOR PED | -----
-    exports['ox_target']:addGlobalPed(GrammaPed, {
+    LocalNPCs[index].GrammaPed = GrammaPed
+    local playerPed = PlayerPedId()
+    local playerCoords = GetEntityCoords(playerPed)
+    local distance = #(playerCoords - vector3(1152.3486, -431.7743, 66.0120))
+    if distance <= 2.5 then
+        while distance <= 2.5 do
+        exports.bulletin:Send('Press E', 5000, "bottomright", "error")
+        if IsControlJustReleased(0, 38) then
+            TriggerEvent('bd-gramma:client:requestHelp')
+        end
+    end
+    end
+    
+
+
+   --[[ exports.ox_target:addBoxZone("gramma", vector3(2810.74, 5983.58, 349.92), 1.0, 1.0, {
+        name="جده شريره",
+        heading=280.37,
+        debugPoly=false,
+        minZ= 349.92-1.5,
+        maxZ= 349.92+1.5
+    }, {
         options = {
             {
-                type = "client",
-                event = "bd-gramma:client:requestHelp",
-                icon = "fa-solid fa-comment-medical",
-                label = "Request Help",
-            },
+                event = 'bd-gramma:client:requestHelp',
+                icon = 'fa-solid fa-comment-medical',
+                label = 'Request Help'
+                --store = Config.SellShops[i]
+            }
         },
-        distance = 1.5,
+        job = 'all',
+        distance = 1.5
     })
-    LocalNPCs[index].GrammaPed = GrammaPed
+   ]] 
 end
 
 local function DestroyLocalNPC(index)
@@ -74,10 +110,10 @@ Citizen.CreateThread(function()
     end
 end)
 RegisterNetEvent('bd-gramma:client:requestHelp', function()
-    local PlayerData = ESX.GetPlayerFromIdData()
-    local cash = PlayerData.money.cash
+    local PlayerData = ESX.GetPlayerData()
+    local cash = ESX.GetPlayerData().accounts.Money
     local totalpay = Config.GrammaCost
-    if cash >= totalpay then
+    
         lib.notify({
             id = 'illegal_gramma',
             title = 'Gramma',
@@ -140,22 +176,5 @@ RegisterNetEvent('bd-gramma:client:requestHelp', function()
                 iconColor = '#FF2B2B'
             })
         end
-    else
-        lib.notify({
-            id = 'illegal_gramma',
-            title = 'Gramma',
-            description = 'You think this service is free?',
-            showDuration = false,
-            position = 'top',
-            style = {
-                backgroundColor = '#141517',
-                color = '#FF2B2B',
-                ['.description'] = {
-                  color = '#909296'
-                }
-            },
-            icon = 'house-medical',
-            iconColor = '#FF2B2B'
-        })
-    end
+
 end)
