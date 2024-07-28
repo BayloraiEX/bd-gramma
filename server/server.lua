@@ -1,13 +1,18 @@
-ESX = exports['es_extended']:getSharedObject()
+ESX = nil
 
+TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 RegisterNetEvent('bd-gramma:server:RecievedHelp', function(src)
     -- Remove the money from player
-    local Player = ESX.GetPlayerFromId(source)
+    local xPlayer = ESX.GetPlayerFromId(source)
     local cash = Config.GrammaCost
     
-    Player.removeMoney('cash', cash)
+    xPlayer.removeAccountMoney('bank', cash)
     if Config.AmulanceJob == 'esx' then
-       -- TriggerClientEvent('esx_ambulancejob:revive', Player.source)
-        Player.triggerEvent('esx_ambulancejob:revive')
+       --('esx_ambulancejob:revive')
+      --  TriggerEvent('esx_ambulancejob:revive_new')
+      --  TriggerEvent('esx_ambulancejob:revive_new', source)
+        xPlayer.triggerEvent('esx_ambulancejob:revive_new')
+        --('esx_ambulancejob:revive_new')
+       -- TriggerEvent('esx_ambulancejob:revive_new', id)
     end
 end)
